@@ -1,0 +1,51 @@
+.form-title {
+  font-size: 24px;
+  color: #d63384;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.product-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.product-form label {
+  font-weight: bold;
+  color: #333;
+}
+
+.product-form input,
+.product-form select,
+.product-form button {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.btn-update {
+  background-color: #0d6efd;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-update:hover {
+  background-color: #0b5ed7;
+}
+.price-input {
+  width: 100%;
+  max-width: 300px; /* hoặc 400px nếu bạn muốn dài hơn */
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+form .price-input {
+  width: 300px !important;
+}

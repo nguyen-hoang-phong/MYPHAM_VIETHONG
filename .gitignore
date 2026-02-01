@@ -1,0 +1,14 @@
+# File cấu hình nhạy cảm
+includes/config.php
+includes/db.php
+
+# Upload của người dùng
+uploads/
+
+# IDE / Tool
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+.DS_Store
