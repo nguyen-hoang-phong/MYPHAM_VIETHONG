@@ -16,15 +16,15 @@ if (session_status() === PHP_SESSION_NONE) {
   <a href="index.php">Trang chủ</a> |
   <a href="products.php">Sản phẩm</a> |
   <a href="about.php">Giới thiệu</a> |
-  <a href="contact.php">Liên hệ</a> |
- 
+  <a href="contact.php">Liên hệ</a> 
+  
   <?php
 if (isset($_SESSION['user']))
  { echo '| <a href="logout.php">Đăng xuất</a>';
   
  } else { echo '| <a href="login.php">Đăng nhập</a>'; 
   echo '| <a href="register.php">Đăng ký</a>'; }
-?>
+?> 
 
  
 </nav>

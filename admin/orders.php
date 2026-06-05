@@ -64,9 +64,10 @@ if (isset($_GET['search_name']) && $_GET['search_name'] !== '') {
   </ul>
 </div>
 
-<!-- Form tìm kiếm đơn hàng theo tên khách hàng --> <form method="get" style="text-align:center; margin-bottom:20px;"> <input type="text" name="search_name" placeholder="Nhập tên khách hàng..." value="<?= isset($_GET['search_name']) ? htmlspecialchars($_GET['search_name']) : '' ?>"> <button type="submit">🔍 Tìm kiếm</button> </form>
+<!-- Form tìm kiếm đơn hàng theo tên khách hàng --> <form method="get" style="text-align:center; margin-bottom:20px;"> <input type="text" name="search_name" placeholder="Nhập tên khách hàng..." value="<?= isset($_GET['search_name']) ? htmlspecialchars($_GET['search_name']) : '' ?>"> 
+<button type="submit">🔍 Tìm kiếm</button> </form>
 
-  <h2 style="text-align:center;">📦 Danh sách đơn hàng</h2>
+  <h2 style="text-align:center; margin-top:10px;margin-bottom:5px">📦 Danh sách đơn hàng</h2>
   <table border="1" width="100%">
    <tr>
       <th>ID</th>

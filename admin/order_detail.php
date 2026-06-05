@@ -10,7 +10,11 @@ $order = $conn->query("SELECT * FROM orders WHERE id = $order_id")->fetch_assoc(
 
 // Lấy chi tiết sản phẩm trong đơn hàng
 $stmt = $conn->prepare("
-  SELECT p.name, oi.quantity, oi.price
+  SELECT 
+      p.name,
+      oi.quantity,
+      oi.price,
+      p.tax_percent
   FROM order_items oi
   JOIN products p ON oi.product_id = p.id
   WHERE oi.order_id = ?
@@ -29,21 +33,82 @@ $result = $stmt->get_result();
   <p><strong>Ngày tạo:</strong> <?= $order['created_at'] ?></p>
 
   <table border="1" width="100%" cellpadding="8" style="margin-top:20px;">
-    <tr>
-      <th>Sản phẩm</th>
-      <th>Số lượng</th>
-      <th>Đơn giá</th>
-      <th>Thành tiền</th>
-    </tr>
-    <?php while ($row = $result->fetch_assoc()): ?>
-    <tr>
-      <td><?= htmlspecialchars($row['name']) ?></td>
-      <td><?= $row['quantity'] ?></td>
-      <td><?= number_format($row['price']) ?> VNĐ</td>
-      <td><?= number_format($row['price'] * $row['quantity']) ?> VNĐ</td>
-    </tr>
-    <?php endwhile; ?>
-  </table>
+  <tr>
+    <th>Sản phẩm</th>
+    <th>Số lượng</th>
+    <th>Đơn giá</th>
+    <th>Thuế (%)</th>
+    <th>Tiền VAT</th>
+    <th>Tổng sau thuế</th>
+  </tr>
+
+<?php
+$total = 0;
+$total_tax = 0;
+
+while ($row = $result->fetch_assoc()):
+
+    $subtotal = $row['price'] * $row['quantity'];
+
+    $tax_percent = $row['tax_percent'];
+
+    $item_tax = $subtotal * $tax_percent / 100;
+
+    $total_after_tax = $subtotal + $item_tax;
+
+    $total += $subtotal;
+    $total_tax += $item_tax;
+?>
+
+<tr>
+  <td><?= htmlspecialchars($row['name']) ?></td>
+
+  <td><?= $row['quantity'] ?></td>
+
+  <td><?= number_format($row['price']) ?> VNĐ</td>
+
+  <td><?= $tax_percent ?>%</td>
+
+  <td><?= number_format($item_tax) ?> VNĐ</td>
+
+  <td><?= number_format($total_after_tax) ?> VNĐ</td>
+</tr>
+
+<?php endwhile; ?>
+
+<tr>
+  <td colspan="5" align="right">
+    <strong>Tổng trước thuế:</strong>
+  </td>
+
+  <td>
+    <strong><?= number_format($total) ?> VNĐ</strong>
+  </td>
+</tr>
+
+<tr>
+  <td colspan="5" align="right">
+    <strong>Tổng VAT:</strong>
+  </td>
+
+  <td>
+    <strong><?= number_format($total_tax) ?> VNĐ</strong>
+  </td>
+</tr>
+
+<tr>
+  <td colspan="5" align="right">
+    <strong>Tổng thanh toán:</strong>
+  </td>
+
+  <td>
+    <strong>
+      <?= number_format($total + $total_tax) ?> VNĐ
+    </strong>
+  </td>
+</tr>
+
+</table>
 </div>
 
 <?php include("../includes/admin_footer.php"); ?>

@@ -3,3 +3,63 @@
   margin-bottom: 20px;
 }
 
+/* Canh giữa toàn bộ ô trong bảng */
+table td {
+  vertical-align: middle;
+  text-align: center;
+}
+
+/* Ô cột thuế */
+.tax-cell {
+  padding: 0;
+}
+
+/* Form cột thuế */
+.tax-form {
+  display: flex;
+  justify-content: center; /* giữa ngang */
+  align-items: center; /* giữa dọc */
+
+  gap: 5px;
+
+  min-height: 70px;
+  margin: 0;
+}
+
+/* Input thuế */
+.tax-input {
+  width: 60px;
+  height: 35px;
+
+  text-align: center;
+
+  border: 1px solid #999;
+  border-radius: 4px;
+
+  font-size: 16px;
+}
+
+/* Nút OK */
+.tax-form button {
+  background: #27b5e7 !important;
+  color: white;
+
+  border: none;
+
+  padding: 7px 12px;
+
+  border-radius: 5px;
+
+  cursor: pointer;
+
+  margin: 0;
+}
+.btn-add {
+  background-color: #28a745;
+  color: white;
+
+  padding: 4px 4px; /* giảm chiều ngang */
+
+  text-decoration: none;
+  border-radius: 5px;
+}

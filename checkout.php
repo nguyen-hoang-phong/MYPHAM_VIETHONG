@@ -14,32 +14,46 @@ include("includes/header.php");
 
 <h2 style="text-align:center;">Hóa đơn thanh toán</h2>
 
-<?php if (!empty($_SESSION['cart'])): ?>
-<table class="cart">
+<?php if (!empty($_SESSION['cart'])): ?>  
+<table class="cart">    
   <tr>
     <th>Sản phẩm</th>
     <th>Số lượng</th>
-    <th>Giá (chưa thuế VAT)</th>
-    <th>Tổng</th>
-  </tr>
+    <th>Giá</th>
+    <th>Thuế (%)</th>
+    <th>Tiền VAT</th>
+    <th>Tổng sau thuế</th>
+</tr>
   <?php
-  $total = 0;
-  $total_tax = 0;
+  $total = 0;  // (trước thuế)
+  $total_tax = 0; //(thuế)
 
-  foreach ($_SESSION['cart'] as $id => $item) {
-      $subtotal = $item['price'] * $item['quantity'];
-      $item_tax_rate = isset($item['tax_rate']) ? $item['tax_rate'] : 0;
-      $item_tax = $subtotal * $item_tax_rate;
+  foreach ($_SESSION['cart'] as $id => $item) { //Lặp từng sản phẩm:$id → mã sản phẩm;$item → thông tin sản phẩm
+      $subtotal = $item['price'] * $item['quantity'];//Tiền của 1 sản phẩm
+    $tax_percent = isset($item['tax_percent'])
+             ? $item['tax_percent']
+             : 0;
 
-      $total += $subtotal;
+$item_tax = $subtotal * $tax_percent / 100;
+
+      $total += $subtotal;//→ Cộng dồn:Tổng tiền,Tổng thuế
       $total_tax += $item_tax;
   ?>
-  <tr>
+ <tr>
     <td><?php echo htmlspecialchars($item['name']); ?></td>
+
     <td><?php echo (int)$item['quantity']; ?></td>
+
     <td><?php echo number_format($item['price']); ?> VNĐ</td>
-    <td><?php echo number_format($subtotal); ?> VNĐ</td>
-  </tr>
+
+    <td><?php echo $tax_percent; ?>%</td>
+
+    <td><?php echo number_format($item_tax); ?> VNĐ</td>
+
+    <td>
+        <?php echo number_format($subtotal + $item_tax); ?> VNĐ
+    </td>
+</tr>
   <?php } ?>
   <tr>
     <td colspan="3" align="right"><strong>Tổng cộng trước thuế:</strong></td>

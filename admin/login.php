@@ -3,22 +3,22 @@ session_start();
 include("../includes/admin_db.php");
 
 $error = "";
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {// Dòng này kiểm tra request gửi lên có phải là POST không //$_SERVER là một biến toàn cục,chứa thông tin về:Server (máy chủ),Request (yêu cầu từ trình duyệt),Đường dẫn, header, phương thức gửi dữ liệu...
     $email = trim($_POST['email']);
     $password = $_POST['password'];
 
-    $stmt = $conn->prepare("SELECT * FROM users WHERE email=?");
-    $stmt->bind_param("s", $email);
+    $stmt = $conn->prepare("SELECT * FROM users WHERE email=?"); //   "?"
+    $stmt->bind_param("s", $email); // Gán giá trị vào dấu "?"
     $stmt->execute();
     $result = $stmt->get_result();
     $admin = $result->fetch_assoc();
 
     if ($admin) {
         if ($admin['role'] !== 'admin') {
-            $error = "Tài khoản không có quyền admin!";
-        } elseif (password_verify($password, $admin['password'])) {
+            $error = "Tài khoản không có quyền admin!";  //Chặn user thường
+        } elseif (password_verify($password, $admin['password'])) {//Chỉ admin + đúng mật khẩu mới login
             $_SESSION['admin'] = $admin['id'];
-            header("Location: dashboard.php");
+            header("Location: dashboard.php");// Điều hướng vào trang admin
             exit;
         } else {
             $error = "Sai mật khẩu!";

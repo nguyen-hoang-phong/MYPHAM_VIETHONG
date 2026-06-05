@@ -6,25 +6,27 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <?php include("includes/header.php"); ?>
 
-  <div class="container" style="max-width:400px; margin:auto;">
-    <h2 style="text-align:center;">Đăng ký tài khoản</h2>
-    <form method="post" action="register_process.php">
-      <label>Họ tên:</label>
-      <input type="text" name="fullname" required><br><br>
+<?php include("includes/header.php"); ?>
 
-      <label>Email:</label>
-      <input type="email" name="email" required><br><br>
+<div class="login-page">
 
-      <label>Mật khẩu:</label>
-      <input type="password" name="password" required><br><br>
+    <form method="post" action="register_process.php" class="login-form">
+        <h2 class="login-title">Đăng ký tài khoản</h2>
 
-      <button type="submit">Đăng ký</button>
+        <input type="text" name="fullname" placeholder="Họ tên" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Mật khẩu" required>
+
+        <button type="submit">Đăng ký</button>
     </form>
-    <p style="text-align:center;">Đã có tài khoản? <a href="login.php">Đăng nhập</a></p>
-  </div>
 
-  <?php include("includes/footer.php"); ?>
+    <p class="login-register">
+        Đã có tài khoản? <a href="login.php">Đăng nhập</a>
+    </p>
+</div>
+
+<?php include("includes/footer.php"); ?>
+
 </body>
 </html>

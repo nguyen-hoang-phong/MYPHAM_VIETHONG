@@ -13,13 +13,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $result = $stmt->get_result();
-
+   
     if ($result->num_rows === 1) {
         $user = $result->fetch_assoc();
 
         // Kiểm tra mật khẩu
         if (password_verify($password, $user['password'])) {
-            // Lưu session đầy đủ thông tin
+            // Lưu session đầy đủ thông tin 
             $_SESSION['user'] = [
                 'id'    => $user['id'],
                 'email' => $user['email'],
@@ -29,7 +29,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Điều hướng theo role
            header("Location: index.php");
 exit;
-
            
         } else {
             $error = "Sai mật khẩu!";
@@ -38,7 +37,22 @@ exit;
         $error = "Email không tồn tại!";
     }
 }
+ /*   
+    Đoạn code sử dụng prepared statement để truy vấn dữ liệu từ bảng users theo email.
+Hàm prepare() tạo câu lệnh SQL có tham số ?,
+bind_param() gán giá trị email vào tham số đó,
+execute() thực thi truy vấn,
+và get_result() lấy kết quả trả về từ database.
+Cách này giúp chống SQL Injection và tăng tính bảo mật
+Đoạn code kiểm tra kết quả truy vấn, nếu tồn tại user thì lấy thông tin bằng fetch_assoc().
+Sau đó dùng password_verify() để so sánh mật khẩu người dùng nhập với mật khẩu đã mã hóa trong database.
+Nếu đúng, lưu thông tin user vào session và chuyển hướng trang.
+Nếu sai, thông báo lỗi mật khẩu.
+Nếu email không tồn tại, thông báo lỗi tương ứng
+
+    */
 ?>
+
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -50,18 +64,24 @@ exit;
 <body>
   <?php include("includes/header.php"); ?>
 
-  <div class="container" style="max-width:400px; margin:auto;">
-    <h2 style="text-align:center;">Đăng nhập</h2>
-    <form id="loginForm" method="post" action="login.php" autocomplete="off">
-      <input type="email" name="email" placeholder="Email" required autocomplete="off"><br><br>
-      <input type="password" name="password" placeholder="Mật khẩu" required autocomplete="off"><br><br>
-      <button type="submit" name="login">Đăng nhập</button>
+<div class="login-page">
+   
+
+    <form id="loginForm" method="post" action="login.php" class="login-form" >
+         <h2 class="login-title">Đăng nhập</h2>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Mật khẩu" required>
+        
+
+        <button type="submit" name="login">Đăng nhập</button>
     </form>
 
     <?php if (!empty($error)) echo "<p class='error-message'>$error</p>"; ?>
 
-    <p style="text-align:center;">Chưa có tài khoản? <a href="register.php">Đăng ký</a></p>
-  </div>
+    <p class="login-register">
+        Chưa có tài khoản? <a href="register.php">Đăng ký</a>
+    </p>
+</div>
 
   <?php include("includes/footer.php"); ?>
 </body>

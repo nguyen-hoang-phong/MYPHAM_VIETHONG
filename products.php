@@ -7,8 +7,9 @@ if (!isset($_SESSION['user'])) {
 ?>
 <?php
 // Kết nối CSDL
-include("includes/db.php"); 
+require_once("includes/db.php"); 
 ?>
+
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -40,9 +41,9 @@ include("includes/db.php");
 
 if (!empty($_GET['search_name'])) {
     $search_name = $conn->real_escape_string(trim($_GET['search_name']));
+    //$stmt = $conn->prepare("SELECT * FROM products WHERE name LIKE ?");
     $where = "WHERE name LIKE '%$search_name%'";
 }
-
 $sql = "SELECT * FROM products $where ORDER BY id DESC";
 
     $result = $conn->query($sql);

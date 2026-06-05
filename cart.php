@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 include("includes/header.php");
 
 // Nếu giỏ hàng chưa có thì khởi tạo
@@ -19,29 +20,28 @@ $id = isset($_POST['product_id']) ? (int)$_POST['product_id'] : 0;
         // Ví dụ dữ liệu sản phẩm (bạn có thể lấy từ DB hoặc mảng)
 include("includes/db.php"); // nếu chưa có
 
-$stmt = $conn->prepare("SELECT name, price FROM products WHERE id = ?");
+$stmt = $conn->prepare("
+    SELECT name, price, tax_percent
+    FROM products
+    WHERE id = ?
+");
 $stmt->bind_param("i", $id);
 $stmt->execute();
 $result = $stmt->get_result();
 
 if ($result->num_rows > 0) {
+
     $product = $result->fetch_assoc();
+
     $_SESSION['cart'][$id] = [
         "name" => $product['name'],
         "price" => $product['price'],
+        "tax_percent" => $product['tax_percent'],
         "quantity" => $quantity
     ];
 }
+
 $stmt->close();
-
-
-        if (isset($products[$id])) {
-            $_SESSION['cart'][$id] = [
-                "name" => $products[$id]['name'],
-                "price" => $products[$id]['price'],
-                "quantity" => $quantity
-            ];
-        }
     }
 }
 
@@ -56,16 +56,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'update') {
         }
     }
 }
-if (isset($_GET['action']) && $_GET['action'] == 'set_tax') {
-    $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
-    $tax_rate = isset($_POST['tax_rate']) ? (float)$_POST['tax_rate'] : 0;
 
-    if (isset($_SESSION['cart'][$id])) {
-        if ($tax_rate >= 0 && $tax_rate <= 100) {
-            $_SESSION['cart'][$id]['tax_rate'] = $tax_rate / 100;
-        }
-    }
-}
 
 
 
@@ -94,8 +85,9 @@ if (isset($_GET['action']) && $_GET['action'] == 'delete') {
     <th>Sản phẩm</th>
     <th>Số lượng</th>
     <th>Giá (chưa thuế VAT)</th>
-    <th>Tổng</th>
     <th>Thuế (%)</th>
+    <th>Tiền VAT</th>
+    <th>Tổng sau thuế</th>
     <th>Hành động</th>
   </tr>
 <?php
@@ -103,14 +95,43 @@ $total = 0;
 $total_tax = 0;
 
 foreach ($_SESSION['cart'] as $id => $item) {
-    // Tính tổng tiền cho sản phẩm
+
+    // Lấy thuế mới nhất từ database
+    include("includes/db.php");
+
+    $stmt = $conn->prepare("
+        SELECT tax_percent
+        FROM products
+        WHERE id = ?
+    ");
+
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+
+        $product_db = $result->fetch_assoc();
+
+        // cập nhật thuế mới vào session
+        $_SESSION['cart'][$id]['tax_percent']
+            = $product_db['tax_percent'];
+    }
+
+    $stmt->close();
+
+    // lấy lại dữ liệu thuế mới
+    $tax_percent = $_SESSION['cart'][$id]['tax_percent'];
+
+    // tính tiền
     $subtotal = $item['price'] * $item['quantity'];
 
-    // Lấy thuế suất riêng từng sản phẩm (nếu có)
-    $item_tax_rate = isset($item['tax_rate']) ? $item['tax_rate'] : 0;
-    $item_tax = $subtotal * $item_tax_rate;
+    $item_tax = $subtotal * $tax_percent / 100;
 
-    // Cộng dồn tổng tiền và tổng thuế
+    $total_after_tax = $subtotal + $item_tax;
+
+    // cộng dồn
     $total += $subtotal;
     $total_tax += $item_tax;
 ?>
@@ -122,15 +143,17 @@ foreach ($_SESSION['cart'] as $id => $item) {
             <a href="cart.php?action=update&type=increase&id=<?php echo $id; ?>">+</a>
         </td>
         <td><?php echo number_format($item['price']); ?> VNĐ</td>
-        <td><?php echo number_format($subtotal); ?> VNĐ</td>
         <td>
-            <form method="post" action="cart.php?action=set_tax&id=<?php echo $id; ?>">
-                <input type="number" name="tax_rate" 
-                       value="<?php echo $item_tax_rate * 100; ?>" 
-                       min="0" max="100" style="width:60px;">
-                <button type="submit">OK</button>
-            </form>
-        </td>
+    <?php echo $tax_percent; ?>%
+</td>
+
+<td>
+    <?php echo number_format($item_tax); ?> VNĐ
+</td>
+
+<td>
+    <?php echo number_format($total_after_tax); ?> VNĐ
+</td>
         <td><a href="cart.php?action=delete&id=<?php echo $id; ?>">Xóa</a></td>
     </tr>
 <?php

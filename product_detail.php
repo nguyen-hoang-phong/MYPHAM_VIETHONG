@@ -23,7 +23,11 @@ if ($result->num_rows === 0) {
       <div class="product-info">
         <h2><?php echo htmlspecialchars($product['name']); ?></h2>
         <p><strong>Giá:</strong> <?php echo number_format((float)$product['price'], 0, ',', '.'); ?> đ</p>
-        <p><strong>Mô tả:</strong> <?php echo htmlspecialchars($product['description']); ?></p>
+        <p class="product-description">
+    <strong>Mô tả:</strong><br>
+
+    <?php echo nl2br(htmlspecialchars($product['description'])); ?>
+</p>
         <p><strong>Danh mục:</strong> <?php echo htmlspecialchars($product['category']); ?></p>
 
 <form method="post" action="cart.php?action=add">
@@ -32,7 +36,6 @@ if ($result->num_rows === 0) {
   <button type="submit">Thêm vào giỏ</button>
   
 </form>
-
 
       </div>
     </div>

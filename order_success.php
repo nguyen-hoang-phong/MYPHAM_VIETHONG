@@ -13,7 +13,7 @@ include("includes/header.php");
   <h2>Thanh toán thành công!</h2>
   <p>Cảm ơn bạn đã mua hàng. Đơn hàng của bạn đã được ghi nhận.</p>
 
-  <div style="text-align:center; margin-top:20px;">
+  <div style="text-align:center; margin-top:10px;">
     <a href="products.php"><button>Tiếp tục mua hàng</button></a>
   </div>
 </body>

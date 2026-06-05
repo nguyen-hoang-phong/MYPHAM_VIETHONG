@@ -65,10 +65,10 @@ body {
 
 /* Lỗi */
 .error-message {
-  margin-top: 10px;
+  margin-top: 10px; /* đẩy lỗi xuống 1 chút không bị dính sát form*/
   color: red;
-  font-weight: bold;
-  font-size: 14px;
+  font-weight: bold; /* chữ in đậm */
+  font-size: 14px; /* Kích thước chữ = 14px */
 }
 
 /* Link đăng ký */
