@@ -177,7 +177,7 @@ foreach ($_SESSION['cart'] as $id => $item) {
 
 <!-- Nút nằm bên dưới bảng -->
 <div style="text-align:center; margin-top:20px;">
-  <a href="checkout.php"><button>Thanh toán</button></a>
+  <a href="checkout.php"><button>Đặt hàng</button></a>
   <a href="products.php"><button>Quay lại mua hàng</button></a>
 </div>
 

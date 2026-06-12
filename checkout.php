@@ -12,7 +12,7 @@ include("includes/header.php");
 </head>
 <body>
 
-<h2 style="text-align:center;">Hóa đơn thanh toán</h2>
+<h2 style="text-align:center;">Đơn hàng</h2>
 
 <?php if (!empty($_SESSION['cart'])): ?>  
 <table class="cart">    
@@ -77,7 +77,7 @@ $item_tax = $subtotal * $tax_percent / 100;
 
   <input type="hidden" name="total" value="<?php echo $total + $total_tax; ?>">
 
-  <button type="submit">Hoàn tất thanh toán</button>
+  <button type="submit">Hoàn tất đặt hàng</button>
 </form>
 
   <a href="cart.php"><button>Quay lại giỏ hàng</button></a>
