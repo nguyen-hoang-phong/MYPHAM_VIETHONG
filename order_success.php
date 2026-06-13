@@ -10,7 +10,7 @@ include("includes/header.php");
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <h2>Thanh toán thành công!</h2>
+  <h2>Đặt hàng thành công!</h2>
   <p>Cảm ơn bạn đã mua hàng. Đơn hàng của bạn đã được ghi nhận.</p>
 
   <div style="text-align:center; margin-top:10px;">

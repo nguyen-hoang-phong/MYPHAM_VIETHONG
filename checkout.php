@@ -7,7 +7,7 @@ include("includes/header.php");
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Thanh toán - Mỹ Phẩm Việt Hồng</title>
+  <title>Đặt hàng - Mỹ Phẩm Việt Hồng</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
